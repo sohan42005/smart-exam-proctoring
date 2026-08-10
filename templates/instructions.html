@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 800px;">
+    <h2>Exam Instructions</h2>
+    <hr style="margin-bottom: 20px;">
+    
+    <div style="font-size: 16px;">
+        <p>Please read the following instructions carefully before proceeding:</p>
+        <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px;">
+            <li><strong>Camera is required:</strong> You must allow webcam access. You must remain visible during the entire exam.</li>
+            <li><strong>Microphone is required:</strong> You must allow microphone access. Audio activity is monitored.</li>
+            <li><strong>AI Proctoring:</strong> The system continuously monitors for:
+                <ul>
+                    <li>No face detected</li>
+                    <li>Multiple people in the frame</li>
+                    <li>Use of mobile phones</li>
+                    <li>Suspicious head movements (looking away)</li>
+                </ul>
+            </li>
+            <li><strong>Browser Monitoring:</strong> Tab switching, exiting fullscreen, and losing window focus are recorded and may lead to termination.</li>
+            <li><strong>Fullscreen:</strong> The exam must be taken in Fullscreen mode.</li>
+            <li><strong>Auto-Submit:</strong> The exam will automatically submit when the timer ends.</li>
+        </ul>
+        <div class="alert" style="background-color: #f39c12;">
+            <strong>Warning:</strong> Any suspicious activity will be recorded along with photo evidence.
+        </div>
+    </div>
+    
+    <div style="text-align: right; margin-top: 30px;">
+        <a href="{{ url_for('auth.selfie') }}" class="btn">Continue</a>
+    </div>
+</div>
+{% endblock %}

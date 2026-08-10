@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; text-align: center;">
+    <h2>EXAM RESULT</h2>
+    <hr style="margin-bottom: 20px;">
+    
+    <div style="font-size: 18px; margin-bottom: 20px;">
+        <p><strong>Total Questions:</strong> {{ result['total_questions'] }}</p>
+        <p><strong>Attempted:</strong> {{ result['attempted'] }}</p>
+        <p><strong>Correct:</strong> {{ result['correct'] }}</p>
+        <p><strong>Wrong:</strong> {{ result['wrong'] }}</p>
+        <p><strong>Unanswered:</strong> {{ result['unanswered'] }}</p>
+    </div>
+    
+    <div style="background: #ecf0f1; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3>Score: {{ result['score'] }} / {{ result['total_questions'] }}</h3>
+        <h3>Percentage: {{ "%.2f"|format(result['percentage']) }}%</h3>
+    </div>
+    
+    <div style="background: {% if attempt['risk_status'] == 'High Risk' %}#f8d7da{% elif attempt['risk_status'] == 'Medium Risk' %}#fff3cd{% else %}#d4edda{% endif %}; padding: 15px; border-radius: 8px;">
+        <h4>Proctoring Risk Score: {{ attempt['risk_score'] }}</h4>
+        <p>Status: <strong>{{ attempt['risk_status'] }}</strong></p>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('auth.logout') }}" class="btn">Logout</a>
+    </div>
+</div>
+{% endblock %}

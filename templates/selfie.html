@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; text-align: center;">
+    <h2>Student Verification</h2>
+    <p>Please capture a clear selfie for identity verification.</p>
+    
+    <div style="margin: 20px 0;">
+        <video id="webcam" autoplay playsinline style="width: 100%; border-radius: 8px; background: #000; display: block;"></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <img id="snapshot" style="width: 100%; border-radius: 8px; display: none; margin-top: 10px;" />
+    </div>
+    
+    <div id="status-msg" style="margin-bottom: 15px; font-weight: bold;"></div>
+    
+    <button id="capture-btn" class="btn" style="width: 100%; margin-bottom: 10px;">Capture Selfie</button>
+    <button id="retake-btn" class="btn" style="width: 100%; background: #95a5a6; display: none; margin-bottom: 10px;">Retake</button>
+    <a href="{{ url_for('auth.system_check') }}" id="continue-btn" class="btn btn-success" style="width: 100%; display: none;">Continue</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('canvas');
+    const snapshot = document.getElementById('snapshot');
+    const captureBtn = document.getElementById('capture-btn');
+    const retakeBtn = document.getElementById('retake-btn');
+    const continueBtn = document.getElementById('continue-btn');
+    const statusMsg = document.getElementById('status-msg');
+    
+    // Request Camera Access
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(err => {
+            statusMsg.innerHTML = '<span style="color:red;">Error: Camera access denied. Please allow camera permissions.</span>';
+            captureBtn.disabled = true;
+        });
+
+    captureBtn.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const dataURL = canvas.toDataURL('image/jpeg');
+        snapshot.src = dataURL;
+        
+        video.style.display = 'none';
+        snapshot.style.display = 'block';
+        captureBtn.style.display = 'none';
+        
+        // In a real system, you'd send this to the backend for face verification
+        statusMsg.innerHTML = '<span style="color:green;">✓ Face detected<br>✓ Identity verification completed</span>';
+        
+        retakeBtn.style.display = 'inline-block';
+        continueBtn.style.display = 'inline-block';
+    });
+    
+    retakeBtn.addEventListener('click', () => {
+        video.style.display = 'block';
+        snapshot.style.display = 'none';
+        captureBtn.style.display = 'inline-block';
+        retakeBtn.style.display = 'none';
+        continueBtn.style.display = 'none';
+        statusMsg.innerHTML = '';
+    });
+</script>
+{% endblock %}

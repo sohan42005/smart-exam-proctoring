@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+    <h2>Admin Dashboard</h2>
+    <a href="{{ url_for('admin.logout') }}" class="btn btn-danger">Logout</a>
+</div>
+<hr style="margin-bottom: 20px;">
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px;">
+    <div class="card" style="margin: 0; padding: 20px; text-align: center;">
+        <h3>{{ stats['total_students'] }}</h3>
+        <p>Total Students</p>
+    </div>
+    <div class="card" style="margin: 0; padding: 20px; text-align: center;">
+        <h3>{{ stats['exams_completed'] }}</h3>
+        <p>Exams Completed</p>
+    </div>
+    <div class="card" style="margin: 0; padding: 20px; text-align: center;">
+        <h3>{{ stats['avg_score'] }}%</h3>
+        <p>Average Score</p>
+    </div>
+    <div class="card" style="margin: 0; padding: 20px; text-align: center; background: #f8d7da;">
+        <h3 style="color: #721c24;">{{ stats['high_risk'] }}</h3>
+        <p style="color: #721c24;">High Risk Attempts</p>
+    </div>
+</div>
+
+<h3>Recent Exam Attempts</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Risk Score</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in attempts %}
+        <tr>
+            <td>{{ a['name'] }} ({{ a['student_id'] }})</td>
+            <td>{{ a['start_time'].split('.')[0] }}</td>
+            <td>{% if a['score'] != None %}{{ a['score'] }}{% else %}-{% endif %}</td>
+            <td>{% if a['percentage'] != None %}{{ "%.2f"|format(a['percentage']) }}%{% else %}-{% endif %}</td>
+            <td>{{ a['risk_score'] }}</td>
+            <td>
+                {% if a['risk_status'] == 'High Risk' %}
+                    <span style="color: red; font-weight: bold;">{{ a['risk_status'] }}</span>
+                {% elif a['risk_status'] == 'Medium Risk' %}
+                    <span style="color: orange; font-weight: bold;">{{ a['risk_status'] }}</span>
+                {% else %}
+                    <span style="color: green; font-weight: bold;">{{ a['risk_status'] }}</span>
+                {% endif %}
+            </td>
+            <td><a href="{{ url_for('admin.view_attempt', attempt_id=a['attempt_id']) }}" class="btn" style="padding: 5px 10px; font-size: 14px;">View Details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

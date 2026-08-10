@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 600px;">
+    <h2>System Check</h2>
+    <p>We are checking your system requirements...</p>
+    
+    <ul style="list-style: none; margin: 20px 0; font-size: 18px;">
+        <li style="margin-bottom: 10px;">Camera <span id="cam-status" style="float:right; color:orange;">Checking...</span></li>
+        <li style="margin-bottom: 10px;">Microphone <span id="mic-status" style="float:right; color:orange;">Checking...</span></li>
+        <li style="margin-bottom: 10px;">Browser <span id="browser-status" style="float:right; color:green;">✓ Ready</span></li>
+        <li style="margin-bottom: 10px;">Fullscreen <span id="fs-status" style="float:right; color:gray;">Pending Start</span></li>
+    </ul>
+    
+    <button id="start-btn" class="btn btn-success" style="width: 100%; display: none;">Start Exam</button>
+    <p id="error-msg" style="color: red; text-align: center; margin-top: 15px;"></p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let camReady = false;
+    let micReady = false;
+
+    // Check permissions
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            document.getElementById('cam-status').innerHTML = '✓ Ready';
+            document.getElementById('cam-status').style.color = 'green';
+            camReady = true;
+            
+            document.getElementById('mic-status').innerHTML = '✓ Ready';
+            document.getElementById('mic-status').style.color = 'green';
+            micReady = true;
+            
+            stream.getTracks().forEach(track => track.stop()); // release for now
+            
+            if (camReady && micReady) {
+                document.getElementById('start-btn').style.display = 'block';
+            }
+        })
+        .catch(err => {
+            document.getElementById('cam-status').innerHTML = '✗ Denied';
+            document.getElementById('cam-status').style.color = 'red';
+            document.getElementById('mic-status').innerHTML = '✗ Denied';
+            document.getElementById('mic-status').style.color = 'red';
+            document.getElementById('error-msg').innerText = "Camera and Microphone permissions are required to start the exam.";
+        });
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+        window.location.href = "{{ url_for('exam.exam') }}";
+    });
+</script>
+{% endblock %}
