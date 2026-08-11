@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 5
+names: ['book', 'extra_person', 'laptop', 'phone', 'student']
+
+roboflow:
+  workspace: s-workspace-rm2tc
+  project: online-exam-proctoring-wjh05-kvcsr
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/s-workspace-rm2tc/online-exam-proctoring-wjh05-kvcsr/dataset/1
