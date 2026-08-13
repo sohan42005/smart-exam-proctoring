@@ -11,7 +11,7 @@ import base64
 proctoring_bp = Blueprint('proctoring', __name__)
 
 # Load YOLO model for phone detection
-yolo_model = YOLO('yolov8n.pt') 
+yolo_model = YOLO(os.path.join(Config.PROJECT_ROOT, 'yolov8n.pt')) 
 
 # Load OpenCV Haar Cascades for face detection
 # Using the default frontal face and profile face cascades included in opencv
