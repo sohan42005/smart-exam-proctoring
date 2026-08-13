@@ -28,14 +28,6 @@
 
 ---
 
-# QUESTION DATASET SOURCE
-
-The aptitude question bank was **prepared programmatically specifically for this project** for demonstration and testing purposes. 
-
-No external static datasets were downloaded or imported. Instead, a custom Python generation algorithm (`init_db.py`) was written to dynamically compute randomized math and logic problems (e.g., train speeds, work rates, algebra, and sequences) while calculating mathematically correct options and plausible incorrect distractors. Questions were organized into standard aptitude categories such as Quantitative Aptitude, Logical Reasoning, and Numerical Ability.
-
----
-
 # TECHNOLOGY TO SOURCE MAPPING
 
 | Technology / Concept | Purpose in Project | Reference |
